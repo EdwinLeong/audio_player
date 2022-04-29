@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:audio_player/animation.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +18,16 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
+  late Timer timer;
+
+  void startTimer() {
+    timer = Timer(const Duration(seconds: 20), () async {
+      // deleayed code here
+      print('delayed execution');
+      await audioPlayer.pause();
+      _showLoadingDialog(context);
+    });
+  }
 
   @override
   void initState() {
@@ -35,13 +48,34 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     audioPlayer.onAudioPositionChanged.listen((newPosition) {
-      // print('the newPosition $newPosition');
       setState(() {
         position = newPosition;
       });
+      // print('the position $position');
     });
 
     super.initState();
+  }
+
+  void _showLoadingDialog(BuildContext context) {
+    timer.cancel();
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+          ),
+          content: Text(
+            'Subscribe for Continue',
+            style: TextStyle(fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -67,9 +101,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      // ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -87,13 +121,13 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 10,
             ),
             const Text(
-              'Hello Song',
+              'Red Moon',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 10,
             ),
-            const Text('Edwin'),
+            const Text('by Diego Nava'),
             Slider(
               min: 0.0,
               max: 100.toDouble(),
@@ -111,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   Text(formatTime(position)),
                   // Text(formatTime(duration)),
-                  const Text('01:41'),
+                  const Text('01:43'),
                 ],
               ),
             ),
@@ -121,10 +155,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 iconSize: 50,
                 icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
                 onPressed: () async {
-                  audioPlayer.onDurationChanged.listen((Duration newDuration) {
-                    print('Max duration 2: $newDuration');
-                  });
-
                   if (isPlaying) {
                     await audioPlayer.pause();
                     // var res = await audioPlayer.pause();
@@ -135,8 +165,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     // }
                   } else {
                     String url =
-                        "https://cdn.pixabay.com/download/audio/2022/03/23/audio_07b2a04be3.mp3?filename=order-99518.mp3";
+                        "https://assets.mixkit.co/music/preview/mixkit-red-moon-499.mp3";
                     await audioPlayer.play(url);
+                    startTimer();
                     // var res = await audioPlayer.play(url, isLocal: true);
                     // if (res == 1) {
                     //   setState(() {
@@ -150,11 +181,20 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push<Widget>(
+            context,
+            MaterialPageRoute<Widget>(
+              builder: (BuildContext context) {
+                return const AnimationPage();
+              },
+            ),
+          );
+        },
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
