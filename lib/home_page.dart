@@ -18,16 +18,16 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
-  late Timer timer;
+  // late Timer timer;
 
-  void startTimer() {
-    timer = Timer(const Duration(seconds: 20), () async {
-      // deleayed code here
-      print('delayed execution');
-      await audioPlayer.pause();
-      _showLoadingDialog(context);
-    });
-  }
+  // void startTimer() {
+  //   timer = Timer(const Duration(seconds: 20), () async {
+  //     // deleayed code here
+  //     print('delayed execution');
+  //     await audioPlayer.pause();
+  //     _showLoadingDialog(context);
+  //   });
+  // }
 
   @override
   void initState() {
@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _showLoadingDialog(BuildContext context) {
-    timer.cancel();
+    // timer.cancel();
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -149,52 +149,85 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            CircleAvatar(
-              radius: 35,
-              child: IconButton(
-                iconSize: 50,
-                icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
-                onPressed: () async {
-                  if (isPlaying) {
-                    await audioPlayer.pause();
-                    // var res = await audioPlayer.pause();
-                    // if (res == 1) {
-                    //   setState(() {
-                    //     isPlaying = false;
-                    //   });
-                    // }
-                  } else {
-                    String url =
-                        "https://assets.mixkit.co/music/preview/mixkit-red-moon-499.mp3";
-                    await audioPlayer.play(url);
-                    startTimer();
-                    // var res = await audioPlayer.play(url, isLocal: true);
-                    // if (res == 1) {
-                    //   setState(() {
-                    //     isPlaying = true;
-                    //   });
-                    // }
-                  }
-                },
+            // CircleAvatar(
+            //   radius: 35,
+            //   child: IconButton(
+            //     iconSize: 50,
+            //     icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+            //     onPressed: () async {
+            //       if (isPlaying) {
+            //         await audioPlayer.pause();
+            //         // var res = await audioPlayer.pause();
+            //         // if (res == 1) {
+            //         //   setState(() {
+            //         //     isPlaying = false;
+            //         //   });
+            //         // }
+            //       } else {
+            //         String url =
+            //             "https://assets.mixkit.co/music/preview/mixkit-red-moon-499.mp3";
+            //         await audioPlayer.play(url);
+            //         startTimer();
+            //         // var res = await audioPlayer.play(url, isLocal: true);
+            //         // if (res == 1) {
+            //         //   setState(() {
+            //         //     isPlaying = true;
+            //         //   });
+            //         // }
+            //       }
+            //     },
+            //   ),
+            // ),
+            Center(
+              child: SizedBox(
+                height: 75,
+                width: 75,
+                child: PlayButton(
+                  pauseIcon: Icon(Icons.pause, color: Colors.black, size: 50),
+                  playIcon:
+                      Icon(Icons.play_arrow, color: Colors.black, size: 50),
+                  onPressed: () async {
+                    if (isPlaying) {
+                      await audioPlayer.pause();
+                      // var res = await audioPlayer.pause();
+                      // if (res == 1) {
+                      //   setState(() {
+                      //     isPlaying = false;
+                      //   });
+                      // }
+                    } else {
+                      String url =
+                          "https://assets.mixkit.co/music/preview/mixkit-red-moon-499.mp3";
+                      await audioPlayer.play(url);
+                      // startTimer();
+                      // var res = await audioPlayer.play(url, isLocal: true);
+                      // if (res == 1) {
+                      //   setState(() {
+                      //     isPlaying = true;
+                      //   });
+                      // }
+                    }
+                  },
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push<Widget>(
-            context,
-            MaterialPageRoute<Widget>(
-              builder: (BuildContext context) {
-                return const AnimationPage();
-              },
-            ),
-          );
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push<Widget>(
+      //       context,
+      //       MaterialPageRoute<Widget>(
+      //         builder: (BuildContext context) {
+      //           return const AnimationPage();
+      //         },
+      //       ),
+      //     );
+      //   },
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 }

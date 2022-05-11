@@ -34,7 +34,7 @@ class PlayButton extends StatefulWidget {
     this.playIcon = const Icon(Icons.play_arrow),
     this.pauseIcon = const Icon(Icons.pause),
     // ignore: unnecessary_null_comparison
-  }) : assert(onPressed != null);
+  });
 
   final bool initialIsPlaying;
   final Icon playIcon;
@@ -123,9 +123,9 @@ class _PlayButtonState extends State<PlayButton> with TickerProviderStateMixin {
               child: _buildIcon(isPlaying),
               duration: _kToggleDuration,
             ),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.transparent,
+              color: Colors.blueGrey[100],
             ),
           ),
         ],
@@ -157,8 +157,8 @@ class Blob extends StatelessWidget {
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(80),
-              topRight: Radius.circular(140),
+              topLeft: Radius.circular(150),
+              topRight: Radius.circular(240),
               bottomLeft: Radius.circular(220),
               bottomRight: Radius.circular(180),
             ),
